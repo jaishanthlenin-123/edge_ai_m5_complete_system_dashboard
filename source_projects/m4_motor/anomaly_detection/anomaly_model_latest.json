@@ -1,0 +1,29 @@
+{
+  "model_type": "auto",
+  "trained_at": "2026-11-06T14:35:06.312607",
+  "sample_count": 4,
+  "contamination": 0.05,
+  "feature_names": [
+    "current_mean",
+    "current_peak",
+    "current_std",
+    "current_rms",
+    "voltage_mean",
+    "voltage_std",
+    "voltage_min",
+    "voltage_drop",
+    "accel_mag_mean",
+    "accel_mag_std",
+    "accel_mag_rms",
+    "accel_mag_p2p",
+    "accel_mag_crest_factor",
+    "accel_x_std",
+    "accel_y_std",
+    "accel_z_std",
+    "sound_p2p_mean",
+    "sound_p2p_max",
+    "sound_rms_mean",
+    "sound_energy",
+    "angle_motion_rate"
+  ]
+}

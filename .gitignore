@@ -1,0 +1,37 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Operating System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# IDE / Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Runtime Database & Logs
+*.log
+*.tmp
+backend/database/m5_integrated_system.db-journal
+backend/database/m5_integrated_system.db-wal
+backend/database/m5_integrated_system.db-shm
+
+# Sensitive Environment Configurations
+.env
