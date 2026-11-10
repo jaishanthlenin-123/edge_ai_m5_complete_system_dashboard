@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M5: Integrated Vision Inspection & Motor Condition Monitoring</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Chart.js for industrial time-series strip charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-icon">⚡</div>
+                <div class="brand-text">
+                    <h2>M5 INTEGRATED</h2>
+                    <span class="subtext">Vision & Motor Monitoring</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="overview">
+                    <span class="icon">📊</span> Overview
+                </button>
+                <button class="nav-item" data-tab="vision">
+                    <span class="icon">👁️</span> Vision Inspection
+                </button>
+                <button class="nav-item" data-tab="motor">
+                    <span class="icon">⚙️</span> Motor Monitoring
+                </button>
+                <button class="nav-item" data-tab="history-insp">
+                    <span class="icon">📋</span> Inspection History
+                </button>
+                <button class="nav-item" data-tab="history-motor">
+                    <span class="icon">📈</span> Motor History
+                </button>
+                <button class="nav-item" data-tab="alerts">
+                    <span class="icon">🚨</span> Alerts
+                    <span class="badge" id="sidebar-alert-badge">0</span>
+                </button>
+                <button class="nav-item" data-tab="assessment">
+                    <span class="icon">🎯</span> Assessment & Rig
+                </button>
+                <button class="nav-item" data-tab="health">
+                    <span class="icon">🩺</span> System Health
+                </button>
+            </nav>
+
+            <div class="system-status-box">
+                <div class="status-indicator">
+                    <span class="pulse-dot green" id="global-pulse"></span>
+                    <span id="global-status-text">SYSTEM OPERATIONAL</span>
+                </div>
+                <div class="version-label">Windows Native Platform v1.0</div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Bar -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1 id="page-title">Executive Overview</h1>
+                    <p id="page-subtitle">Unified industrial telemetry and quality assurance</p>
+                </div>
+                <div class="header-pills">
+                    <div class="status-pill green" id="pill-vision">Vision: READY</div>
+                    <div class="status-pill green" id="pill-motor">Motor: RUNNING</div>
+                    <div class="clock-display" id="clock-display">00:00:00 UTC</div>
+                </div>
+            </header>
+
+            <!-- TAB 1: OVERVIEW -->
+            <section class="tab-pane active" id="pane-overview">
+                <!-- 3 Headline KPIs -->
+                <div class="kpi-grid">
+                    <div class="kpi-card" id="kpi-card-1">
+                        <div class="kpi-header">
+                            <span class="kpi-tag">KPI 1</span>
+                            <span class="kpi-title">Inspection Accuracy</span>
+                        </div>
+                        <div class="kpi-value" id="kpi-acc-val">--%</div>
+                        <div class="kpi-footer">
+                            <span class="kpi-subtext" id="kpi-acc-detail">Awaiting evaluation</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card" id="kpi-card-2">
+                        <div class="kpi-header">
+                            <span class="kpi-tag">KPI 2</span>
+                            <span class="kpi-title">Inspection Pass Rate</span>
+                        </div>
+                        <div class="kpi-value" id="kpi-pass-val">--%</div>
+                        <div class="kpi-footer">
+                            <span class="kpi-subtext" id="kpi-pass-detail">0 PASS / 0 FAIL</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card" id="kpi-card-3">
+                        <div class="kpi-header">
+                            <span class="kpi-tag">KPI 3</span>
+                            <span class="kpi-title">Motor Anomaly Events</span>
+                        </div>
+                        <div class="kpi-value alert-text" id="kpi-anom-val">0</div>
+                        <div class="kpi-footer">
+                            <span class="kpi-subtext" id="kpi-anom-detail">Recorded period</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Latest Status Cards Grid -->
+                <div class="dashboard-grid">
+                    <!-- Latest Vision Card -->
+                    <div class="dash-card">
+                        <div class="card-header">
+                            <h3>👁️ Latest Vision Inspection</h3>
+                            <span class="badge green" id="overview-insp-status">IDLE</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="dual-row">
+                                <div class="item">
+                                    <span class="label">Sample ID:</span>
+                                    <span class="val" id="ov-sample-id">--</span>
+                                </div>
+                                <div class="item">
+                                    <span class="label">Source:</span>
+                                    <span class="val" id="ov-source-mode">--</span>
+                                </div>
+                            </div>
+                            <div class="dual-row">
+                                <div class="item">
+                                    <span class="label">Helmet:</span>
+                                    <span class="val" id="ov-helmet">--</span>
+                                </div>
+                                <div class="item">
+                                    <span class="label">Gloves:</span>
+                                    <span class="val" id="ov-gloves">--</span>
+                                </div>
+                            </div>
+                            <div class="item" style="margin-top: 10px;">
+                                <span class="label">Compliance Reason:</span>
+                                <div class="val reason-box" id="ov-reason">System initializing...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Latest Motor Card -->
+                    <div class="dash-card">
+                        <div class="card-header">
+                            <h3>⚙️ Latest Motor Telemetry</h3>
+                            <span class="badge green" id="overview-motor-status">NORMAL</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="dual-row">
+                                <div class="item">
+                                    <span class="label">Current (A):</span>
+                                    <span class="val metric-highlight" id="ov-current">0.000 A</span>
+                                </div>
+                                <div class="item">
+                                    <span class="label">Voltage (V):</span>
+                                    <span class="val metric-highlight" id="ov-voltage">0.00 V</span>
+                                </div>
+                            </div>
+                            <div class="dual-row">
+                                <div class="item">
+                                    <span class="label">Vibration (X):</span>
+                                    <span class="val" id="ov-accel">--</span>
+                                </div>
+                                <div class="item">
+                                    <span class="label">Audio P2P:</span>
+                                    <span class="val" id="ov-sound">--</span>
+                                </div>
+                            </div>
+                            <div class="item" style="margin-top: 10px;">
+                                <span class="label">Anomaly Score:</span>
+                                <div class="meter-bar">
+                                    <div class="meter-fill" id="ov-anom-fill" style="width: 10%;"></div>
+                                </div>
+                                <span class="subtext" id="ov-anom-score-text">0.05 / 1.00 (Normal Operation)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Alerts Overview -->
+                <div class="dash-card full-width">
+                    <div class="card-header">
+                        <h3>🚨 Active Alerts & Incidents</h3>
+                        <a href="#" class="view-link" onclick="switchTab('alerts'); return false;">View All Alerts →</a>
+                    </div>
+                    <div class="card-body table-container">
+                        <table class="data-table" id="table-overview-alerts">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Module</th>
+                                    <th>Severity</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="5" class="empty-cell">No active alerts recorded.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: VISION INSPECTION -->
+            <section class="tab-pane" id="pane-vision">
+                <div class="vision-grid">
+                    <!-- Live Stream Video Box -->
+                    <div class="dash-card video-card">
+                        <div class="card-header">
+                            <h3>Camera Feed & HUD Overlay</h3>
+                            <div class="controls-row">
+                                <select id="vision-mode-select" class="select-input">
+                                    <option value="webcam">Mode: Live Webcam</option>
+                                    <option value="image_upload">Mode: Image Upload</option>
+                                    <option value="recorded_video">Mode: Recorded Video</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="video-container">
+                            <img id="mjpeg-stream" src="/api/vision/stream" alt="Live Vision Stream">
+                        </div>
+                        <div class="card-footer video-footer">
+                            <div class="actuator-panel">
+                                <span class="panel-label">M3 3-LED Actuator Stack:</span>
+                                <div class="led-stack-visual">
+                                    <div class="led-lamp green" id="led-lamp-green" title="Helmet Indicator (Pin 13)"></div>
+                                    <div class="led-lamp yellow" id="led-lamp-yellow" title="Gloves Indicator (Pin 11)"></div>
+                                    <div class="led-lamp red" id="led-lamp-red" title="Both PPE Indicator (Pin 15)"></div>
+                                </div>
+                                <span class="actuator-status-label" id="actuator-label">ALL LEDS OFF</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Single-Shot Inspection & Details -->
+                    <div class="dash-card side-panel">
+                        <div class="card-header">
+                            <h3>Inspection Controls</h3>
+                        </div>
+                        <div class="card-body">
+                            <!-- Image Upload Form -->
+                            <div class="upload-section">
+                                <label class="label">Inspect Uploaded Image:</label>
+                                <input type="file" id="file-upload-input" accept="image/*" class="file-input">
+                                <button class="btn btn-primary" id="btn-inspect-upload">Inspect Image</button>
+                            </div>
+
+                            <hr class="divider">
+
+                            <div class="inspection-results-detail">
+                                <h4>Latest Decision</h4>
+                                <div class="status-banner" id="insp-status-banner">PASS</div>
+                                <div class="item">
+                                    <span class="label">Reason:</span>
+                                    <div class="val reason-box" id="insp-reason-detail">--</div>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Helmet Conf: <b id="insp-conf-helmet">--%</b></span>
+                                    <span>Gloves Conf: <b id="insp-conf-gloves">--%</b></span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Processing Time: <b id="insp-lat">-- ms</b></span>
+                                    <span>FPS: <b id="insp-fps">--</b></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: MOTOR MONITORING -->
+            <section class="tab-pane" id="pane-motor">
+                <div class="motor-layout">
+                    <!-- Replay Controls Toolbar -->
+                    <div class="dash-card toolbar-card">
+                        <div class="toolbar-flex">
+                            <div class="btn-group">
+                                <button class="btn btn-success" id="btn-replay-play">▶ Play</button>
+                                <button class="btn btn-warning" id="btn-replay-pause">⏸ Pause</button>
+                                <button class="btn btn-secondary" id="btn-replay-reset">⏮ Reset</button>
+                            </div>
+                            <div class="speed-group">
+                                <span class="label">Playback Speed:</span>
+                                <button class="btn-pill" data-speed="0.5">0.5x</button>
+                                <button class="btn-pill active" data-speed="1.0">1.0x</button>
+                                <button class="btn-pill" data-speed="2.0">2.0x</button>
+                                <button class="btn-pill" data-speed="5.0">5.0x</button>
+                            </div>
+                            <div class="fault-group">
+                                <span class="label">Inject Controlled Fault:</span>
+                                <select id="fault-select" class="select-input">
+                                    <option value="NONE">Clean Normal Operation</option>
+                                    <option value="CURRENT_SURGE">Current Surge (>200mA)</option>
+                                    <option value="BEARING_GRIND">Mechanical / Acoustic Spike</option>
+                                    <option value="BROWNOUT">Supply Voltage Brownout</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Oscilloscope Charts -->
+                    <div class="charts-grid">
+                        <div class="dash-card chart-card">
+                            <div class="card-header">
+                                <h4>Electrical Current (A)</h4>
+                                <span class="badge blue" id="chart-curr-badge">0.085 A</span>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-current"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="dash-card chart-card">
+                            <div class="card-header">
+                                <h4>Vibration Magnitude (MPU6050)</h4>
+                                <span class="badge blue" id="chart-vib-badge">335</span>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-vibration"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="dash-card chart-card">
+                            <div class="card-header">
+                                <h4>Audio Sound Level (MAX9814 P2P)</h4>
+                                <span class="badge blue" id="chart-audio-badge">55</span>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-audio"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="dash-card chart-card">
+                            <div class="card-header">
+                                <h4>Multivariate Anomaly Score</h4>
+                                <span class="badge green" id="chart-anom-badge">0.05</span>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-anomaly"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: INSPECTION HISTORY -->
+            <section class="tab-pane" id="pane-history-insp">
+                <div class="dash-card full-width">
+                    <div class="card-header">
+                        <h3>Inspection Logs (Database Records)</h3>
+                        <a href="/api/export/inspections.csv" class="btn btn-outline" download>📥 Export to CSV</a>
+                    </div>
+                    <div class="card-body table-container">
+                        <table class="data-table" id="table-history-insp">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Sample ID</th>
+                                    <th>Timestamp</th>
+                                    <th>Source</th>
+                                    <th>Helmet</th>
+                                    <th>Gloves</th>
+                                    <th>Status</th>
+                                    <th>Ground Truth</th>
+                                    <th>Correct?</th>
+                                    <th>Latency</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: MOTOR HISTORY -->
+            <section class="tab-pane" id="pane-history-motor">
+                <div class="dash-card full-width">
+                    <div class="card-header">
+                        <h3>Motor Telemetry Logs (Database Records)</h3>
+                        <a href="/api/export/motor.csv" class="btn btn-outline" download>📥 Export to CSV</a>
+                    </div>
+                    <div class="card-body table-container">
+                        <table class="data-table" id="table-history-motor">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Timestamp</th>
+                                    <th>Sequence</th>
+                                    <th>Angle</th>
+                                    <th>Voltage (V)</th>
+                                    <th>Current (A)</th>
+                                    <th>Accel (X,Y,Z)</th>
+                                    <th>Audio (P2P)</th>
+                                    <th>Status</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 6: ALERTS -->
+            <section class="tab-pane" id="pane-alerts">
+                <div class="dash-card full-width">
+                    <div class="card-header">
+                        <h3>Unified Alerts Center</h3>
+                        <a href="/api/export/alerts.csv" class="btn btn-outline" download>📥 Export to CSV</a>
+                    </div>
+                    <div class="card-body table-container">
+                        <table class="data-table" id="table-full-alerts">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Timestamp</th>
+                                    <th>Module</th>
+                                    <th>Severity</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 7: ASSESSMENT & REPORTS -->
+            <section class="tab-pane" id="pane-assessment">
+                <div class="dashboard-grid">
+                    <!-- Station 31: 20-Sample Pass/Fail Station -->
+                    <div class="dash-card">
+                        <div class="card-header">
+                            <h3>Station 31: Pass/Fail Station (20 Samples)</h3>
+                            <button class="btn btn-primary" id="btn-run-st31">Run 20-Sample Test</button>
+                        </div>
+                        <div class="card-body">
+                            <p class="subtext">Tests 10 Good + 10 Defective samples and evaluates Pass-Fail Rate.</p>
+                            <div class="confusion-grid" id="st31-confusion-box">
+                                <div class="cm-cell">TP: <b id="st31-tp">10</b></div>
+                                <div class="cm-cell">FP: <b id="st31-fp">0</b></div>
+                                <div class="cm-cell">FN: <b id="st31-fn">0</b></div>
+                                <div class="cm-cell">TN: <b id="st31-tn">10</b></div>
+                            </div>
+                            <div class="dual-row" style="margin-top: 10px;">
+                                <span>Accuracy: <b id="st31-acc">100%</b></span>
+                                <span>False-Pass Rate: <b id="st31-fpr">0.0%</b></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Station 35: 50-Sample Headline Metric -->
+                    <div class="dash-card">
+                        <div class="card-header">
+                            <h3>Station 35: Headline Metric (50 Samples)</h3>
+                            <button class="btn btn-primary" id="btn-run-st35">Run 50-Sample Benchmark</button>
+                        </div>
+                        <div class="card-body">
+                            <p class="subtext">Measures correct inspection decisions out of 50 samples.</p>
+                            <div class="headline-metric-box">
+                                <span class="metric-huge" id="st35-score">50 / 50</span>
+                                <span class="metric-label">Correct Decisions (100.0% Accuracy)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Station 32: 10-Minute Full Chain Test -->
+                <div class="dash-card full-width" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <h3>Station 32: Full Chain on Device (10-Minute Continuous Run)</h3>
+                        <button class="btn btn-success" id="btn-start-chain">Start 10-Minute Run</button>
+                    </div>
+                    <div class="card-body">
+                        <p class="subtext">Executes Camera -> Model -> Decision -> Backend -> DB -> Dashboard and Motor Replay -> Anomaly Model -> DB simultaneously.</p>
+                        <div class="meter-bar" style="height: 14px; margin: 15px 0;">
+                            <div class="meter-fill" id="chain-progress-fill" style="width: 0%;"></div>
+                        </div>
+                        <div class="dual-row">
+                            <span>Status: <b id="chain-status-label">IDLE</b> (<span id="chain-elapsed">0</span>s / 600s)</span>
+                            <span>Vision Inferences: <b id="chain-v-count">0</b> | Motor Samples: <b id="chain-m-count">0</b></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 8: SYSTEM HEALTH -->
+            <section class="tab-pane" id="pane-health">
+                <div class="dash-card full-width">
+                    <div class="card-header">
+                        <h3>System Diagnostics & Runtime Health</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="health-grid">
+                            <div class="health-item">
+                                <span class="label">Backend Status:</span>
+                                <span class="val green-text" id="health-backend">RUNNING</span>
+                            </div>
+                            <div class="health-item">
+                                <span class="label">Uptime:</span>
+                                <span class="val" id="health-uptime">0s</span>
+                            </div>
+                            <div class="health-item">
+                                <span class="label">Vision Engine:</span>
+                                <span class="val" id="health-vision-mode">Webcam (DirectShow)</span>
+                            </div>
+                            <div class="health-item">
+                                <span class="label">Motor Engine:</span>
+                                <span class="val" id="health-motor-mode">RECORDED_DATA (SQLite)</span>
+                            </div>
+                            <div class="health-item">
+                                <span class="label">Database Handle:</span>
+                                <span class="val" id="health-db">CONNECTED</span>
+                            </div>
+                            <div class="health-item">
+                                <span class="label">Recovery Events:</span>
+                                <span class="val" id="health-recovery">0</span>
+                            </div>
+                        </div>
+
+                        <hr class="divider">
+
+                        <h4>Application Logs</h4>
+                        <div class="terminal-log" id="terminal-logs">
+                            <div>[INFO] System initialized. Standby for events.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
