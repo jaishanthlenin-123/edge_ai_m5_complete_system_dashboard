@@ -110,3 +110,4 @@ def test_anomaly_model_current_overload():
     assert pred["status"] == "ANOMALY"
     assert pred["is_anomaly"] is True
     assert pred["anomaly_score"] >= 0.65
+

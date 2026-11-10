@@ -45,3 +45,4 @@
 - **UI Architecture**: Single Page Application (HTML5, CSS3, ES6 JavaScript, Chart.js)
 - **Network Port**: Default `8000` (Localhost: `127.0.0.1:8000`)
 - **Security**: No committed credentials, parameterized SQLite queries, input file type validation
+

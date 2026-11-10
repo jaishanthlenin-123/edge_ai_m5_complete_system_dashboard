@@ -39,3 +39,4 @@ This catalog documents all 24 photographic, screenshot, and video assets uploade
 | **22** | `values_showing.mp4` | Video | Streaming multi-sensor validation video | Req 30, 36 | [`media/m4/values_showing.mp4`](../media/m4/values_showing.mp4) |
 | **23** | `Video showing anamaly.mp4` | Video | Physical anomaly occurrence (motor stall & vibration spike) | Req 33, 37 | [`media/m4/Video showing anamaly.mp4`](../media/m4/Video%20showing%20anamaly.mp4) |
 | **24** | `video_showing_sensorvalues_stepper_motor.mp4`| Video | Dynamic rotational sensor readout video | Req 30, 36 | [`media/m4/video_showing_sensorvalues_stepper_motor.mp4`](../media/m4/video_showing_sensorvalues_stepper_motor.mp4) |
+

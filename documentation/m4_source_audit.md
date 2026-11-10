@@ -40,3 +40,4 @@
    - Dedicated threaded replay engine supporting play, pause, resume, reset, variable playback speed (0.5x, 1x, 2x, 5x), and timestamp synchronization.
 4. **Authenticity Guarantee**:
    - Each data point transmitted to the M5 backend explicitly carries its provenance (`source_mode`), preventing synthetic or replayed data from being misrepresented as live sensor readings.
+

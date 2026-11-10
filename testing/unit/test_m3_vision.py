@@ -98,3 +98,4 @@ def test_inspection_decision_rules():
     norm_res, _ = adapter.inspect_single_image(blank)
     assert norm_res["inspection_status"] == "FAIL"
     assert "Missing" in norm_res["inspection_reason"]
+

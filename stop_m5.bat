@@ -10,3 +10,4 @@ for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":8000" ^| findstr "LISTENING
 )
 echo [INFO] M5 system shutdown complete.
 pause
+

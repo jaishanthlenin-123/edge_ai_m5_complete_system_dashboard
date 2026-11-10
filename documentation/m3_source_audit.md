@@ -50,3 +50,4 @@ Per the corrected M3 source specification, the LED logic is:
    - User image upload (JPEG/PNG/WebP).
    - Video stream replay for repeatable automated benchmarking.
 3. **Actuator Emulation**: Software GPIO state machine with non-blocking virtual timer threads matching the exact physical timing of the Raspberry Pi 5 RP1 chip.
+

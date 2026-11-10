@@ -13,3 +13,4 @@
    - Computes normalized anomaly score `[0.0, 1.0]`.
 4. **Alert Dispatch**:
    - If anomaly score crosses threshold `0.65`, a critical motor alert event is dispatched, logged in SQLite, and highlighted on the dashboard strip charts.
+

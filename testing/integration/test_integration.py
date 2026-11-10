@@ -79,3 +79,4 @@ def test_independent_module_resilience():
 
     motor_adapter.resume()
     assert motor_adapter.is_paused is False
+

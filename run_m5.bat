@@ -24,3 +24,4 @@ start "" http://127.0.0.1:8000
 REM Launch FastAPI uvicorn server
 python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --log-level info
 pause
+

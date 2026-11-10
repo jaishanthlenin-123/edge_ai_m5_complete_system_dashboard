@@ -9,3 +9,4 @@
 
 ## 3. Lighting Sensitivity
 - Extreme low-light conditions (<50 Lux) can reduce glove detection confidence. The recommended inspection zone illumination is 350 – 500 Lux diffuse overhead lighting.
+

@@ -537,3 +537,4 @@ class WindowsMotorAdapter:
 
 # Global Singleton Motor Adapter
 motor_adapter = WindowsMotorAdapter()
+

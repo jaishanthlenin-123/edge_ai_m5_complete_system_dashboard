@@ -35,3 +35,4 @@ backend/database/m5_integrated_system.db-shm
 
 # Sensitive Environment Configurations
 .env
+

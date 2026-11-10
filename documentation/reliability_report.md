@@ -14,3 +14,4 @@ The M5 system was engineered to guarantee that neither subsystem failure nor har
 - **Fault 2: Severe Mechanical Friction (`BEARING_GRIND`)**:
   - Injected Value: Sound P2P exceeds 720 (Limit: 600) and vibration spikes to 620 ADC.
   - Observed Behavior: Cross-domain acoustic/vibration divergence triggers immediate anomaly warning.
+

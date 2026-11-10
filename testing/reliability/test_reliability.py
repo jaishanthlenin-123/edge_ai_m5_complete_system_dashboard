@@ -59,3 +59,4 @@ def test_database_persistence_and_query():
     logs = db_manager.get_system_logs(limit=5)
     assert len(logs) > 0
     assert any("reliability" in l["message"] for l in logs)
+

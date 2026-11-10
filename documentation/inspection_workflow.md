@@ -20,3 +20,4 @@
 4. **Policy Evaluation**: Counts of compliant items vs violations are evaluated against the inspection policy.
 5. **Actuator Update**: Virtual 3-LED state machine is updated according to the authoritative truth table.
 6. **Persistence & Broadcast**: Normalized dictionary is published to `event_bus`, stored in SQLite, and pushed to WebSocket subscribers.
+

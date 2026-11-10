@@ -173,3 +173,4 @@ class KPIService:
 
 # Global KPI Service Instance
 kpi_service = KPIService()
+

@@ -18,3 +18,4 @@ Run the full test suite with:
 pytest -v testing/
 ```
 All 16 automated tests execute in under 35 seconds and report verified passes.
+

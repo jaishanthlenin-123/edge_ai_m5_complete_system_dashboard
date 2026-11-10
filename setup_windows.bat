@@ -34,3 +34,4 @@ echo   M5 SETUP COMPLETE!
 echo   To launch the complete application, execute: run_m5.bat
 echo =====================================================================
 pause
+

@@ -105,3 +105,4 @@ def serve_dashboard():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("backend.app.main.py:app", host=SERVER_HOST, port=SERVER_PORT, reload=False)
+

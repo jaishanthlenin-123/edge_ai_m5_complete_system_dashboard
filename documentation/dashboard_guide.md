@@ -26,3 +26,4 @@ Located on the Motor Monitoring tab:
 - **Play / Pause / Reset**: Controls continuous replay of authentic recorded telemetry.
 - **Speed Multiplier**: Adjusts replay pacing between half-speed (0.5x) and high-speed (5.0x).
 - **Fault Injector**: Select `CURRENT_SURGE` to simulate stall overcurrent (>200mA) or `BEARING_GRIND` to simulate severe mechanical friction, immediately demonstrating how the ML anomaly model flags alarms.
+

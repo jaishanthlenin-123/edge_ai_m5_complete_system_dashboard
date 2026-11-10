@@ -38,3 +38,4 @@ def test_50_sample_headline_metric():
     assert bench["total_samples"] == 50
     assert bench["correct_results"] >= 45, f"Expected at least 45/50 correct, got {bench['correct_results']}"
     assert bench["accuracy_pct"] >= 90.0
+

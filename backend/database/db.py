@@ -295,3 +295,4 @@ class DatabaseManager:
 
 # Global Singleton Database Manager
 db_manager = DatabaseManager()
+
